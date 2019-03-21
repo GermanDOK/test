@@ -5,13 +5,19 @@ import random
 import joke
 import infa
 import coin
+import coin2
 import course
-import pogoda
+import pogodamos
+import subscribe
+import pogodasan
+import pogodasochi
+import pogodaekat
+from datetime import datetime
 
 
 
  
-TOKEN = "fa6e8710c05b13e8ecaca4b7da6af35a3f8cc18309bb8fcf850a69bf7d73310ce899f39c28533c7c40d62"
+TOKEN = "a0d1d279443bf040e73826d0a5f5e8c48be937e65489e4ef8237ffcadf6f96bf5c4d7ee47b0e9446385ff"
  
 vk = vk_api.VkApi(token=TOKEN)
  
@@ -31,6 +37,8 @@ while True:
   (музыка) - Мы заходите в подгруппу с жанрами песен,
   (привет) - Вы начинаете разговор с ботом(улудшение этой функции в активной разработке)
   (квест) - Вы заходите в меню квестов, и выбирая любой, вы начинаете игру, 
+  (погода) - Показывает погоду пока что только в Москве
+  (подписчики) - Вы заходите в меню ютуберов и выберая одного, вам показывает сколько у него подписчиков в реальном времени,
   При повторении песни, видео, мема, просто напишите еще раз команду, это рандом, и что то может повторяться. 
    """
  
@@ -57,7 +65,7 @@ while True:
             4 - Bass House           
             выйти или выход - выход в предыдущее меню
             """
-            bot_infaf = """ Чего, извини я не расслышал? """
+            bot_infaf = """ Чего? Извини я не расслышал. """
 
             vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
  
@@ -102,7 +110,11 @@ while True:
                                   "audio2000243059_456242876",
                                   "audio-2001368625_40368625",
                                   "audio-2001368623_40368623",
-                                  "audio-2001368620_40368620"]
+                                  "audio-2001368620_40368620",
+                                  "audio272549451_456239757",
+                                  "audio474499146_456281742",
+                                  "audio474499203_456311081",
+                                  "audio371745455_456487607"]
                         audios = random.choice(audios)
                         vk.method("messages.send",
                                   {"peer_id":user_id, "random_id":msg_id, "message":"Лови", "attachment": audios})
@@ -147,7 +159,7 @@ while True:
                                   {"peer_id":user_id, "random_id":msg_id, "message":"Лови", "attachment": audios})
 
                     elif text.lower() == "выход" or text.lower() == "выйти":
-                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":"вы вышли из подменю"})
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":"Вы вышли из подменю"})
                         break #выход из вложенного бесконечного цикла while True
                     else:
                         vk.method("messages.send",
@@ -157,27 +169,165 @@ while True:
         if text.lower() == "анекдот":
             vk.method("messages.send",
                         {"peer_id":user_id, "random_id":msg_id, "message":joke.get_joke()})
+        #elif text.lower() == "дибил":
+            #vk.method("groups.ban", {"owner_id": id})
 
+        elif text.lower() == "подписчики":
+            new_command = """
+            Вы вошли в подменю "Подписчики", выберите ютубера, который вас интересует:
+            1 - PewDiePie           
+            выйти или выход - выход в предыдущее меню
+            """
+            bot_infaf = """ Чего, извини я не расслышал? """
+
+            vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
+ 
+            while True:
+                messages = vk.method("messages.getConversations", {"count":20, "filter":"unanswered"}) 
+                if messages["count"] > 0: 
+                    last_messages = messages["items"][0]["last_message"] 
+                    text = last_messages["text"] 
+                    user_id = last_messages["from_id"] 
+                    msg_id = random.randint(1, 200000000000000000000000000000000000000000000000000000000)
+ 
+                    if text == "1":
+                        sub = subscribe.get_subs_pewdiepie()
+                        sub_msg = "{} подписчиков".format(sub)
+                        vk.method("messages.send",
+                            {"peer_id":user_id, "random_id":msg_id, "message":sub_msg})
+                        break
+                    if text == "2":
+                        sub1 = subscribe.get_subs_ts()
+                        sub_msg1 = "{} подписчиков".format(sub1)
+                        vk.method("messages.send",
+                            {"peer_id":user_id, "random_id":msg_id, "message":sub_msg1})
+                        break
+                    else:
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":bot_infaf})
+             
+        
 
         elif text.lower() == "инфа":
             vk.method("messages.send",
                         {"peer_id":user_id, "random_id":msg_id, "message":infa.get_infa()})
 
 
-        elif text.lower() == "монетка":
-            vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":coin.get_coin()})
+        elif text.lower() == "монетка":                                 #vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":coin.get_coin()})
+            new_command = """
+            Выберите Орел или Решка:
+            1.Орел
+            2.Решка
+
+            Выйти - выход из игры
+            """
+            bot_infaf = """ Чего, извини я не расслышал? """
+
+            vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
+ 
+            while True:
+                messages = vk.method("messages.getConversations", {"count":20, "filter":"unanswered"}) 
+                if messages["count"] > 0: 
+                    last_messages = messages["items"][0]["last_message"] 
+                    text = last_messages["text"] 
+                    user_id = last_messages["from_id"] 
+                    msg_id = random.randint(1, 200000000000000000000000000000000000000000000000000000000)
+                    if text.lower() == "1":
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":coin.get_coin()})
+
+                    elif text.lower() == "2":
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":coin2.get_coin()})
+
+                    elif text.lower() =="Выйти":
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":"Вы вышли из игры"})
+                    else:
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":bot_infaf})
+
+
+            
+
+            
 
 
         elif text.lower() == "курс":
-            usd = course.get_course("R01235")            
-            eur = course.get_course("R01239")
-            gbp = course.get_course("R01035")
-            course_msg = "{} дают за 1 доллар, {} дают за 1 евро, {} дают за 1 фунт стерлингов".format(usd, eur, gbp)
-            vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":course_msg})
+            new_command = """
+            Вы вошли в подменю "Курса валют", выберите курс который вас интересует:
+            1 - Доллар
+            2 - Евро
+            3 - фунт стерлинг           
+            выйти или выход - выход в предыдущее меню
+            """
+            bot_infaf = """ Чего, извини я не расслышал? """
+
+            vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
+ 
+            while True:
+                messages = vk.method("messages.getConversations", {"count":20, "filter":"unanswered"}) 
+                if messages["count"] > 0: 
+                    last_messages = messages["items"][0]["last_message"] 
+                    text = last_messages["text"] 
+                    user_id = last_messages["from_id"] 
+                    msg_id = random.randint(1, 200000000000000000000000000000000000000000000000000000000)
+ 
+                    if text == "1":
+                        usd = course.get_course("R01235")
+                        course_msg = "{} дают за 1 доллар".format(usd)
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":course_msg})
+                        break
+                    if text == "2":
+                        eur = course.get_course("R01239")
+                        course_msg2 = "{} дают за 1 евро".format(eur)
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":course_msg2})
+                        break
+                    if text == "3":
+                        gbp = course.get_course("R01035")
+                        course_msg3 = "{} дают за 1 фунт стерлингов".format(gbp)
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":course_msg3})
+                        break
+                    else:
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":bot_infaf})
+                        
+            
 
 
         elif text.lower() == "мем":
-            memes = ["photo-155590170_456454320","photo-79145826_456302044","photo-79145826_456301995","photo-79145826_456301996","photo-79145826_456301992","photo-79145826_456301991","photo-79145826_456301990","photo-79145826_456301986","photo-79145826_456301985","photo-79145826_456301982","photo-155464693_456342948","photo-155464693_456342972","photo-155464693_456340988","photo-100477272_456407837","photo-139740824_456447984","photo-91050183_456668495","photo489279689_456243390","photo-84600270_456286693","photo-35294456_456799656","photo-117608250_456681132","photo-117608250_456681003","photo-117608250_456681022","photo-117608250_456681021","photo-117608250_456681012","photo-117608250_456681006","photo-117608250_456681004","photo-117608250_456680987","photo-117608250_456680965","photo-117608250_456680935","photo-117608250_456680880","photo-117608250_456680878","photo-117608250_456680876","photo-117608250_456680872","photo-117608250_456680867","photo-117608250_456680864","photo-117608250_456680849","photo-117608250_456680843","photo-117608250_456680747"]
+            memes = ["photo-155590170_456454320",
+                     "photo-79145826_456302044",
+                     "photo-79145826_456301995",
+                     "photo-79145826_456301996",
+                     "photo-79145826_456301992",
+                     "photo-79145826_456301991",
+                     "photo-79145826_456301990",
+                     "photo-79145826_456301986",
+                     "photo-79145826_456301985",
+                     "photo-79145826_456301982",
+                     "photo-155464693_456342948",
+                     "photo-155464693_456342972",
+                     "photo-155464693_456340988",
+                     "photo-100477272_456407837",
+                     "photo-139740824_456447984",
+                     "photo-91050183_456668495",
+                     "photo489279689_456243390",
+                     "photo-84600270_456286693",
+                     "photo-35294456_456799656",
+                     "photo-117608250_456681132",
+                     "photo-117608250_456681003",
+                     "photo-117608250_456681022",
+                     "photo-117608250_456681021",
+                     "photo-117608250_456681012",
+                     "photo-117608250_456681006",
+                     "photo-117608250_456681004",
+                     "photo-117608250_456680987",
+                     "photo-117608250_456680965",
+                     "photo-117608250_456680935",
+                     "photo-117608250_456680880",
+                     "photo-117608250_456680878",
+                     "photo-117608250_456680876",
+                     "photo-117608250_456680872",
+                     "photo-117608250_456680867",
+                     "photo-117608250_456680864",
+                     "photo-117608250_456680849",
+                     "photo-117608250_456680843",
+                     "photo-117608250_456680747"]
             meme = random.choice(memes)
             vk.method("messages.send",
                         {"peer_id":user_id, "random_id":msg_id, "message":"Лови", "attachment": meme})
@@ -211,14 +361,69 @@ while True:
             vk.method("messages.send",
                         {"peer_id":user_id, "random_id":msg_id, "message":"Лови", "attachment": video})
         elif text.lower() == "погода":
-            temp = pogoda.get_temp            
-            cond = pogoda.get_condition
-            wind = pogoda.get_wind_speed
-            fact = pogoda.get_fact_unit
-            time = pogoda.get_time
-            term = pogoda.get_term            
-            pogoda_msg = "Сейчас {}, {}, {}, {} ".format(time, cond, temp, wind )
-            vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":pogoda_msg})
+            new_command = """
+            Выберите город или регион:
+            1.Москва
+            2.Санкт-Петербург
+            3.Сочи
+            4.Екатеринбурге
+            """
+            bot_infafаfа = """ Чего, извини я не расслышал? """
+
+            vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
+ 
+
+
+
+            while True:
+                messages = vk.method("messages.getConversations", {"count":20, "filter":"unanswered"}) 
+                if messages["count"] > 0: 
+                    last_messages = messages["items"][0]["last_message"] 
+                    text = last_messages["text"] 
+                    user_id = last_messages["from_id"] 
+                    msg_id = random.randint(1, 200000000000000000000000000000000000000000000000000000000)
+                    if text.lower() == "Выйти":
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":"Вы вышли из квеста"})
+                        break
+                    elif text == "1":
+                        temp = pogodamos.get_temp()           
+                        cond = pogodamos.get_condition()
+                        wind = pogodamos.get_wind_speed()
+                        fact = pogodamos.get_fact_unit()
+                        time = pogodamos.get_time()
+                        term = pogodamos.get_term()            
+                        pogoda_msg = " {}, {}, {}, Скорость ветра {} {} ".format(time, cond, temp, wind, fact, term)
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":pogoda_msg})
+                        break
+                    elif text == "2":
+                        temp = pogodasan.get_temp()           
+                        cond = pogodasan.get_condition()
+                        wind = pogodasan.get_wind_speed()
+                        fact = pogodasan.get_fact_unit()
+                        time = pogodasan.get_time()
+                        term = pogodasan.get_term()            
+                        pogoda_msg = " {}, {}, {}, Скорость ветра {} {} ".format(time, cond, temp, wind, fact, term)
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":pogoda_msg})
+                        break
+                    elif text == "3":
+                        temp = pogodasochi.get_temp()           
+                        cond = pogodasochi.get_condition()
+                        wind = pogodasochi.get_wind_speed()
+                        fact = pogodasochi.get_fact_unit()
+                        time = pogodasochi.get_time()
+                        term = pogodasochi.get_term()            
+                        pogoda_msg = " {}, {}, {}, Скорость {} {} ".format(time, cond, temp, wind, fact, term)
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":pogoda_msg})
+                        break
+                    elif text == "4":
+                        temp = pogodaekat.get_temp()           
+                        cond = pogodaekat.get_condition()
+                        fact = pogodaekat.get_fact_unit()
+                        time = pogodaekat.get_time()
+                        term = pogodaekat.get_term()            
+                        pogoda_msg = " {}, {}, {}, Скорость ветра {} {} ".format(time, cond, temp, fact, term)
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":pogoda_msg})
+                        break
  
             
 
@@ -227,7 +432,7 @@ while True:
             new_command = """
             Выбери квест
             1.Огромный дом
-            2.Пустыный город
+            2.Пустыный город <<еще нету :)>>
             """
             bot_infafаf = """ Чего, извини я не расслышал? """
 
@@ -249,7 +454,8 @@ while True:
                     elif text == "1":
                         new_command = """
                         Ну окей начнем, обьясняю правила, в каждом мною отправленном тексте есть выбор куда пойти или что сделать, читайте вдумчиво, так как от ваших решений зависит построенние истории. 
-                        Ну чтож, если ты готов напиши ГОТОВ, если нет, то ВЫЙТИ, если хочешь пройти обучение напиши ОБУЧЕНИЕ.
+                        Ну чтож, если что, ты можешь в любой момент выйти, просто напиши ВЫЙТИ
+                        Если готов пиши 1, если нет и хочешь выйти пиши 2.
                         """
                         bot_1 = """ Читай правила) """
                         vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})                                                    
@@ -260,16 +466,15 @@ while True:
                                 text = last_messages["text"] 
                                 user_id = last_messages["from_id"] 
                                 msg_id = random.randint(1, 200000000000000000000000000000000000000000000000000000000)
-                                if text.lower() == "Выйти":
+                                if text.lower() == "2":
                                     vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":"Вы вышли из квеста"})
                                     break
-                                elif text.lower() == "готов":
+                                elif text.lower() == "1":
                                     new_command = """
-                                   Я проснулся как всегда в 7 утра, впринципе обычная погода и все было по обычному, но я испытовал какое-то негодование, что то меня пугало чтоли, и кстати, меня зовут Джон, я обычный фермер, и живу на улице <<Страшного Робберта>>. Почему его так назвали, не знаю, но возможно потому что в этом районе в 1989 году жили прииииизраки, уууу, вам наверное страшно, но мы уже привыкли. Ладно, пойду собераться на работу, куда же я пойду?
+                                   Я проснулся как всегда в 7 утра, впринципе обычная погода и все было по обычному, но я испытовал какое-то негодование, что то меня пугало чтоли, и кстати, меня зовут Джон, я обычный охраник серверов EP JENSON'S, ну это типо Амазон, только менее популярнее, и живу на улице <<Страшного Робберта>>. Почему его так назвали, не знаю, но возможно потому что в этом районе в 1989 году жили прииииизраки, уууу, вам наверное страшно, но мы уже привыкли. Ладно, пойду собераться на работу, куда же я пойду?
                                    1.На кухню
                                    2.В туалет
-                                   3.На балкон
-                                   4.На улицу
+                                   3.На улицу                                   
                                     """
                                     bot_2 = """ Читай текст) """
 
@@ -310,11 +515,11 @@ while True:
                                                             break
                                                         elif text.lower() == "1":
                                                             new_command = """
-                                                           Я решил сходить, вдруг не дойду. Вышол я из туалета и посмотрел на часы:<<ЧЕГОООООООО, ВСМЫСЛЕ 12 ЧАСОВ, У МЕНЯ ЖЕ СМЕНА НАЧИНАЕТСЯ В 12. НЕНЕНЕНЕ, МЕНЯ ЖЕ МОГУТ УВОЛИТЬ>>. 
+                                                           Я решил сходить, вдруг не дойду. Вышeл я из туалета и посмотрел на часы:<<ЧЕГОООООООО, ВСМЫСЛЕ 12 ЧАСОВ, У МЕНЯ ЖЕ СМЕНА НАЧИНАЕТСЯ В 12. НЕНЕНЕНЕ, МЕНЯ ЖЕ МОГУТ УВОЛИТЬ>>. 
                                                            Я быстро взял сумку и еще быстрее побежал на остановку.
                                                            На остановке я встретил бабушку, у которой выпали из чемодана выпали какие-то странные мистичиские штуки: Черный череп, Разноцветный тотем и какие-то записки.
-                                                           Она мне кричит: <<Помоги пожалуйста внучек, благодарна тебе буду>>.
-                                                           И в этот момент подъехал автобус.
+                                                           <<Помоги пожалуйста внучек, благодарна тебе буду>>, видимо обращаясь ко мне, 
+                                                           но в этот момент подъехал автобус.
                                                            Как же я поступлю...
                                                            1.Помогу старушке
                                                            2.Поеду на автобусе
@@ -337,19 +542,17 @@ while True:
                                 
                                                                     elif text.lower() == "1":
                                                                         new_command = """
-                                                                       Ладн, помогу человеку, думаю за первое опаздание меня не уволят:
+                                                                       Ладно, помогу человеку, думаю за первое опаздание меня не уволят:
                                                                        <<Ох, спасибо вам, молодой человек>>, Да какой я молодой, 45 лет мне уже.<<Да ладно, как же пожелому человеку не помочь.
-                                                                       Ладно, я пойду на работу... И вдруг она резко перебила и схватила меня за руку <<В один час ты получишь все, но если используешь не по назначение, убьешь себя>>
-                                                                       Хех, вот же бабки пошли поехавшие. Она отпустила мою руку и сказала только <<Прощай>>. Странная бабка но вдруг подъехал мой автобус и я поехал на работу.
-                                                                       /ПРОШЛО 6 ЧАСОВ/
-                                                                       Я уже ехал домой на последнем автобусе, и уже проезжал мой любимый магазинчик, потом проехал местную школу, а потом уже приехал домой.
+                                                                       Бабуль, я это, пойду на работу, я просто опазд...>> И вдруг она резко перебила меня и схватив за руку, произнесла фразу <<В один час ты получишь все, но если используешь не по назначение, убьешь себя>>
+                                                                       Хех, вот же бабки поехавшие пошли. Она отпустила мою руку <<Теперь ты проклят, но наделен очень сильной магией>>. Странная бабка но времени с ней болтать не было, так как подъехал мой автобус и я поехал на работу.
+                                                                       /ПРОШЛО 8 ЧАСОВ/
+                                                                       Я уже ехал домой на последнем автобусе, и уже проезжая мой любимый магазинчик, я раздумовал что же со мной произошло сегодня, но уже уйдя в свои мысли окончательно, я приехал домой.
                                                                        Весь день меня беспокоили слова старухи, <<В один час все получу и потеряю, но если типо это не по назначению буду использовать, убью себя>>.
                                                                        Ну ладно, завтра выясню, как раз завтра выходной, и может быть пойму.
-                                                                       Так, теперь я наверное пойду
-                                                                       1.В дом
-                                                                       2.В магазин
-                                                                       3.На парк
-                                                                       4.Посижу на лавочке;                                                                                                                                                                                                           
+                                                                       Так, теперь я наверное пойду...
+                                                                       1.В дом                                                                                                                                             
+                                                                       2.Посижу на лавочке;                                                                                                                                                                                                           
                                                                         """
                                                                         bot_6 = " Читай текст) "
                                                                         
@@ -364,21 +567,21 @@ while True:
                                                                                 if text.lower() == "Выйти":
                                                                                      vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":"Вы вышли из квеста"})
                                                                                      break
-                                
+                                                                           
+                               
                                                                                 elif text.lower() == "1":
                                                                                     new_command ="""
                                                                                    Подойдя к дому я понял что что-то забыл, а, ну да, ключи, возможно я их оставил на работе,
-                                                                                   Но вдруг ко мне подошли какие то человек и сказал мне <<Здравствуйте, меня зовут Робберт, Робберт Страшный.
-                                                                                   Это не ваши ли ключи>> Он мне протянул мои же ключи, я был немного в шоке.
-                                                                                   Я спросил <<Спасибо вам, но у меня есть вопрос, а у вас в доме есть например, призраки там ну или другие духи>>
+                                                                                   Но вдруг ко мне подошел какой то человек и сказав мне <<Здравствуйте, меня зовут Робберт, Робберт Страшный.
+                                                                                   Это не ваши ли ключи>> протянул ине мои же ключи, я был немножечко в шоке.
+                                                                                   Я сказал <<Спасибо вам, но у меня есть вопрос, а у вас в доме есть например, призраки там ну или другие духи>>
                                                                                    <<хахахаха>> засмеялся он <<Ну был один, ну он быстро ушел>>.
-                                                                                   Странный молодой человек, но я просто с ним попрощался и мы разошлись,
+                                                                                   Тупой конечно был у меня вопрос, но почему то я захотел его задать.
+                                                                                   Странный молодой человек, и имя и фамилия его в честь этой улицы, и вообще, что значит был один, но он быстро ушел, но я просто с ним попрощался и мы разошлись,
                                                                                    Теперь, когда ключи у меня, я могу зайти в дом,
                                                                                    (кррррррррм)- звук двери, Эххх, наконец я дома, и я решил первым делом...
-                                                                                   1.Пойду в гостинную и ключу телек
-                                                                                   2.Пойду в комнату спать
-                                                                                   3.Пойду на кухню, поем что нибудь
-                                                                                   4.Посижу и подумаю о сегоднешнем дне
+                                                                                   1.Пойду в гостинную и включу телек                                                                                   
+                                                                                   3.Пойду на кухню, поем что нибудь                                                                                   
                                                                                    """
                                                                                     bot_4 = " Читай текст)"
                                                                                     
@@ -399,21 +602,21 @@ while True:
                                                                                                                     
                                                                                             elif text.lower() == "1":
                                                                                                 new_command ="""
-                                                                                                Пойду ка телек посмотрю, может что-то интересное услышу, ведь после такого дня ничего не может удивить,
-                                                                                                Корреспондент:<<Здравствуйте, это программа вести, сегодня разбился самолет, в котором было 147 человек>>
+                                                                                                Пойду телек посмотрю, может что-то интересное услышу, ведь после такого дня как то не себе,
+                                                                                                Корреспондент:<<Здравствуйте, это программа NEWS, сегодня ровно 18:00 разбился самолет, в котором погибло 147 человек>>
                                                                                                 <<Ужас>>, сказал я,<<Жалко людей, ведь они не в чем не виноваты что умерли из за неисправности самолета,
                                                                                                 Корреспондент:<<В нем погибли такие личности как Андриано Муэрто, Дейф Вашингтон и Робберт Страшный,
                                                                                                 Вот их фотографии>> /вывод фотографий/ <<Так стоп, как погиб, я же с ним только что общался, такого не может быть, 
-                                                                                                ну хотя могло быть, если на углу у нас был аэропорт, и он бы успел на самолет,
+                                                                                                Ну хотя могло быть, если на углу у нас был аэропорт, и он бы успел на самолет,
                                                                                                 Но у нас блин самый блежайший аэропорт через 47 км, поэтому я не знаю, как это возможно.
                                                                                                 Может быть было возможно если это был другой Робберт, но фото один в один с тем Роббертом, с которым я общался.
-                                                                                                Ооооох, мне пора спать, завтра разберусь.
-                                                                                                Я разделся и лег в постель, и уже через несколько минут заснул.
+                                                                                                Надо что-то делать, а точно, надо позвонить в полиц...                                                                                               
                                                                                                 кхххххххм.... фууууу.... кхххххххм... фууууууу...
-                                                                                                На утро я встал и пошел...
+                                                                                                На утро я встал и понял что вчера просто уснул, может это был сон, кто знает
+                                                                                                После раздумий я пошел...
                                                                                                 1.На кухню 
                                                                                                 2.В туалет                                                                                       
-                                                                                             """
+                                                                                                """
                                                                                                 bot_7 = " Читай текст) "
 
                                                                                                 vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
@@ -462,8 +665,8 @@ while True:
                                                                                                                         break
                                                                                                                     elif text.lower() == "1":
                                                                                                                         new_command = """
-                                                                                                                        Выйдя на улицу, я просто был в шоке, ее не было.<<КАК, Я ЖЕ ТОЛЬКО ЧТО ВИДЕЛ, ЧТО СО МНОЙ ТВОРИТЬСЯ!!!>> орал я на всю улицу,
-                                                                                                                        пока не прибежали менты, меня успокоили и посоветовали пойти к психологу, но я просто сел на лавочку и задумался...
+                                                                                                                        Выйдя на улицу, я просто был в шоке, ее не было.<<КАК, Я ЖЕ ТОЛЬКО ЧТО ВИДЕЛ, ЧТО СО МНОЙ ТВОРИТЬСЯ, Я ЧТО СОШЕЛ С УМА!!!>> орал я на всю улицу,
+                                                                                                                        пока не прибежали полицейский, меня успокоили и посоветовали пойти к психологу, но я просто сел на лавочку и задумался...
                                                                                                                         1. Cамоубийство
                                                                                                                         2. Пойти к психологу
                                                                                                                         """
@@ -485,14 +688,65 @@ while True:
                                                                                                                                     new_command = """
                                                                                                                                     Я решил завершить свою жизнь, зная, что я проклят той самой бабкой, и ведь я даже не понял ее фразу,
                                                                                                                                     Я пошел домой, взял из сейфа свой P99, и, зная что все, жизнь щас закончиться, я нажал на курок.
-                                                                                                                                    (БААААААМ), вибил дверь спецназ, и видя мое мертвое тело, вызвали скорую, надеясь что как то смогут помочь они,
+                                                                                                                                    (БААААААМ), вибил дверь спецназ, и видя мое мертвое тело, вызвали скорую, надеясь что как то смогут они помочь ,
                                                                                                                                     но... было... уже... поздно...........
-                                                                                                                                    ЕСЛИ ВАМ ПОНРАВИЛСЯ КВЕСТ ТО ПОДПИШИТЕСЬ НА ГРУППУ , ТАК КАК Я ЕГО БУДУ ДОРОБАТОВАТЬ, И ПОСТОЯННО МЕНЯТЬ СЮЖЕТ, ДО СОВЕРШЕНСТВА, СПАСИБО ВАМ ЗА
+
+                                                                                                                                    ЕСЛИ ВАМ ПОНРАВИЛСЯ КВЕСТ ТО ПОДПИШИТЕСЬ НА ГРУППУ , ТАК КАК Я ЕГО БУДУ ДОРОБАТОВАТЬ, И ПОСТОЯННО МЕНЯТЬ ИЛИ ДОПОЛНЯТЬ СЮЖЕТ ВСЕХ КВЕСТОВ, ПОКА ОНИ НЕ ДОСТИГНУТ СОВЕРШЕНСТВА, СПАСИБО ВАМ ЗА
                                                                                                                                     ВРЕМЯ, УДЕЛЕННОЕ МОЕМУ КВЕСТУ :), напишите любое слово"""
                                                                                                                                     bot_10 = " Читай текст) "
 
                                                                                                                                     vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
                                                                                                                                     break
+                                                                                                                                elif text.lower() == "1":
+                                                                                                                                    new_command = """
+                                                                                                                                   Надо и правда сходить к психологу, за консультацией, а то вдруг я сума сошел, какие то проклятые бабки, ор на улице, просмотр телика, 
+                                                                                                                                   Это уже слишком, запишусь к самому лучшему, к Др. Дрексон, но он не брал тручку, и я вспомнил, что получил скидку к какому то психологу 
+                                                                                                                                   Мисис Чаклинс. У меня какое то плохое притчуствие, что же я сделаю...
+                                                                                                                                   1.Позвоню
+                                                                                                                                   2.Не буду звонить вообще, вдруг меня в психушку отправят с такими <<Выдумками>>
+                                                                                                                                   """
+                                                                                                                                    bot_11 = " Читай текст) "
+
+                                                                                                                                    vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
+                                                                                                                        
+                                                                                                                                    while True:
+                                                                                                                                        messages = vk.method("messages.getConversations", {"count":20, "filter":"unanswered"}) 
+                                                                                                    
+                                                                                                                                        if messages["count"] > 0: 
+                                                                                                                                            last_messages = messages["items"][0]["last_message"] 
+                                                                                                        
+                                                                                                                                            text = last_messages["text"] 
+                                                                                                                                            user_id = last_messages["from_id"] 
+                                                                                                        
+                                                                                                                                            msg_id = random.randint(1, 200000000000000000000000000000000000000000000000000000000)
+                                                                                                                                            if text.lower() == "1":
+                                                                                                                                                new_comand = """
+                                                                                                                                                пиииииип.... пиииип.... пииииип.... Здравствуйте, вас приветствует компания ПСИХМОЛГ, вы хотели записаться?
+                                                                                                                                                Да я бы хотел записаться к Доктору...Чаклинс, да к Чаклинс.
+                                                                                                                                                Хорошо мы вас запишем, на какое время вы бы хотели?
+                                                                                                                                                Сегодня в 3 можно?
+                                                                                                                                                Щас посморим... Да конечно, вас на это время записать?
+                                                                                                                                                Дадада...
+                                                                                                                                                Хорошо, тогда Мисис Чаклинс будет ждать.
+                                                                                                                                                А может имя у меня спросите или фамилию?
+                                                                                                                                                Не, у нас все по номеру телефона)
+                                                                                                                                                Все хорошо, тогда досвидание.
+                                                                                                                                                Досвидание.
+                                                                                                                                                Вот и отлично, схожу, может быть пойму что со мной твориться.
+                                                                                                                                                Я оделся, поел и отправился к психологу...
+                                                                                                                                                Приехав и зайдя уже в здание и увидев ресепшен, я решил...
+                                                                                                                                                1.Пойти на ресепшен,(логично, хех)
+                                                                                                                                                2.Пойти налево в коридор
+                                                                                                                                                3.Пойти направо на лестницу
+                                                                                                                                                4. Стоять как столб и никуда не идти.                                                                                                                                           
+                                                                                                                                                """
+                                                                                                                                                bot_12 = " Читай текст) "
+
+                                                                                                                                                vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
+                                                                                                                                           
+                                                                                                                    
+                                                                                                                                                
+
                                                                                                                                 
                                                                                                                     
                                                                                                                         break
@@ -567,18 +821,22 @@ while True:
 
 
 
-                                if text.lower() == "3":
-                                     vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})            
+                                if text.lower() == "3":                                                                                                    
+                                    new_command = """
+                                        Прям голым на улицу, ты серьезно?(это если что риторический вопрос) 
+                                        Выберитe что то другое
+                                                """
+                                    bot_12 = """ Читай текст) """
 
-
-
-                                if text.lower() == "4":
-                                     vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
-
+                                    vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
+                                                                             
 
                                 if text.lower() == "Выйти":
-                                      vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":"Вы вышли из квеста"})
-                                      break
+                                    vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":"Вы вышли из квеста"})
+                                    break
+                                else:                                   
+                                    vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":"Чего? Извини я не расслышал"})
+                                    break
                                             
 
                                                 
@@ -642,21 +900,8 @@ while True:
                     if text == "2":
                         new_command = """
                         Классно, если хочешь быть счастливым напиши ВИДОС или МЕМ и радуйся жизни
-                        """
-                        bot_pomogi = """Чего? Извини не раслышал"""
-
-                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
-                        
-
-                        while True:
-                            messages = vk.method("messages.getConversations", {"count":20, "filter":"unanswered"}) 
-                            if messages["count"] > 0: 
-                                last_messages = messages["items"][0]["last_message"] 
-                                text = last_messages["text"] 
-                                user_id = last_messages["from_id"] 
-                                msg_id = random.randint(1, 200000000000000000000000000000000000000000000000000000000)                                                                                                                                   
-                                  
-                                
+                        """                       
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})                                                                                                                                                                                                                   
                         break  
                         
 
@@ -664,29 +909,17 @@ while True:
                     if text == "3":
                         new_command = """
                     Понял, ну ты поднимешь себе настроение благодаря мне, напиши МЕМ и все будет чики-пуки
-                        """
-                        bot_pomogi = """ Понял, ну ты не переживай, все будет хорошо, у меня есть решение, напиши команду МЕМ и радуйся жизни) """
-
-                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
-                        
-
-                        while True:
-                            messages = vk.method("messages.getConversations", {"count":20, "filter":"unanswered"}) 
-                            if messages["count"] > 0: 
-                                last_messages = messages["items"][0]["last_message"] 
-                                text = last_messages["text"] 
-                                user_id = last_messages["from_id"] 
-                                msg_id = random.randint(1, 200000000000000000000000000000000000000000000000000000000)                                
-                                                                   
-                                                                                                                                                                                                                                                            
+                        """                        
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})                                                                                                                                                                                                                                                                                                                                                                                       
                         break
                         
                        
                     if text == "4":
                             new_command = """
-                            Эх, жалко, а хоть из за чего?
+                            Эх, жалко, а в чем проблема?
                             """
-                            bot_pomogi = """ Понял, ну ты не переживай, все будет хорошо, у меня есть решение, напиши команду МЕМ и радуйся жизни) """
+                            bot_pomogi = """ Понял, ну ты не переживай, я могу тебе предложить это видео чтобы поднять настроение https://www.youtube.com/watch?v=VaX9irsv6q8 , как только досмотришь его до конца, отпиши мне """
+                            bot_pomogig = """ Хорошо, оцени ролик от 1 до 5 , что бы я понял что тебе предложить в следующий раз """ 
 
                             vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
                         
@@ -701,12 +934,53 @@ while True:
                                                                    
                                     if text.lower() == "выход" or text.lower() == "выйти":
                                         vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":bot_infa})
-                                        break 
+                                        break                                    
 
                                     else:
-                                        vk.method("messages.send",
-                                                {"peer_id":user_id, "random_id":msg_id, "message":bot_pomogi})
-                                        break
+                                        while True:
+                                            messages = vk.method("messages.getConversations", {"count":20, "filter":"unanswered"}) 
+                                            if messages["count"] > 0: 
+                                                last_messages = messages["items"][0]["last_message"] 
+                                                text = last_messages["text"] 
+                                                user_id = last_messages["from_id"] 
+                                                msg_id = random.randint(1, 200000000000000000000000000000000000000000000000000000000)
+                                                vk.method("messages.send",
+                                                    {"peer_id":user_id, "random_id":msg_id, "message":bot_pomogi})
+                                                if text.lower() == "выход" or text.lower() == "выйти":
+                                                    vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":bot_infa})
+                                                                            
+                                                else:
+                                                    while True:
+                                                        messages = vk.method("messages.getConversations", {"count":20, "filter":"unanswered"}) 
+                                                        if messages["count"] > 0: 
+                                                            last_messages = messages["items"][0]["last_message"] 
+                                                            text = last_messages["text"] 
+                                                            user_id = last_messages["from_id"] 
+                                                            msg_id = random.randint(1, 200000000000000000000000000000000000000000000000000000000)
+                                                            vk.method("messages.send",
+                                                                {"peer_id":user_id, "random_id":msg_id, "message":bot_pomogig})
+                                                            if text.lower() == "1":
+                                                                vk.method("messages.send",
+                                                                {"peer_id":user_id, "random_id":msg_id, "message":"Спасибо за отзыва, он очень важен для нас :)" })
+                                                                break
+                                                            if text.lower() == "2":
+                                                                vk.method("messages.send",
+                                                                {"peer_id":user_id, "random_id":msg_id, "message":"Спасибо за отзыва, он очень важен для нас :)" })
+                                                                break
+                                                            if text.lower() == "3":
+                                                                vk.method("messages.send",
+                                                                {"peer_id":user_id, "random_id":msg_id, "message":"Спасибо за отзыва, он очень важен для нас :)" })
+                                                                break
+                                                            if text.lower() == "4":
+                                                                vk.method("messages.send",
+                                                                {"peer_id":user_id, "random_id":msg_id, "message":"Спасибо за отзыва, он очень важен для нас :)" })
+                                                                break
+                                                            if text.lower() == "5":
+                                                                vk.method("messages.send",
+                                                                {"peer_id":user_id, "random_id":msg_id, "message":"Спасибо за отзыва, он очень важен для нас :)" })
+                                                                break
+                                                
+                                        
                             break
 
 
@@ -717,6 +991,8 @@ while True:
                         vk.method("messages.send",
                                                 {"peer_id":user_id, "random_id":msg_id, "message":"Рад был с тобой поболтать {}".format(bot_infa)})
                         break
+
+        
                        
         else:
             vk.method("messages.send",
@@ -724,6 +1000,7 @@ while True:
 
        
         print(user_id, "написал нам", text)
+        
 
 
 
