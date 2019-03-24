@@ -10,8 +10,12 @@ import course
 import pogodamos
 import subscribe
 import pogodasan
+import key1
+import key2
+import steam
 import pogodasochi
 import pogodaekat
+import json
 from datetime import datetime
 
 
@@ -222,7 +226,7 @@ while True:
             """
             bot_infaf = """ Чего, извини я не расслышал? """
 
-            vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
+            vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id,"keyboard":json.dumps(key2.keyboard, ensure_ascii=False).encode("utf-8"), "message":new_command})
  
             while True:
                 messages = vk.method("messages.getConversations", {"count":20, "filter":"unanswered"}) 
@@ -232,21 +236,17 @@ while True:
                     user_id = last_messages["from_id"] 
                     msg_id = random.randint(1, 200000000000000000000000000000000000000000000000000000000)
                     if text.lower() == "1":
-                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":coin.get_coin()})
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "keyboard":json.dumps(key2.keyboard, ensure_ascii=False).encode("utf-8"), "message":coin.get_coin()})
 
                     elif text.lower() == "2":
-                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":coin2.get_coin()})
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "keyboard":json.dumps(key2.keyboard, ensure_ascii=False).encode("utf-8"), "message":coin2.get_coin()})
 
-                    elif text.lower() =="Выйти":
-                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":"Вы вышли из игры"})
+                    elif text.lower() =="выйти":
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "keyboard":json.dumps(key1.keyboard, ensure_ascii=False).encode("utf-8"), "message":"Вы вышли из игры"})
+                        break
                     else:
                         vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":bot_infaf})
-
-
-            
-
-            
-
+                     
 
         elif text.lower() == "курс":
             new_command = """
@@ -258,7 +258,7 @@ while True:
             """
             bot_infaf = """ Чего, извини я не расслышал? """
 
-            vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
+            vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id,  "message":new_command})
  
             while True:
                 messages = vk.method("messages.getConversations", {"count":20, "filter":"unanswered"}) 
@@ -991,15 +991,51 @@ while True:
                         vk.method("messages.send",
                                                 {"peer_id":user_id, "random_id":msg_id, "message":"Рад был с тобой поболтать {}".format(bot_infa)})
                         break
+        elif text == "клава":
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "keyboard":json.dumps(key1.keyboard, ensure_ascii=False).encode("utf-8"), "message": "HELLO"})\
+
+        elif text.lower() == "онлайн игроков steam":
+            new_command = """
+            Вы вошли в подменю "Подписчики", выберите ютубера, который вас интересует:
+            1 - PewDiePie           
+            выйти или выход - выход в предыдущее меню
+            """
+            bot_infaf = """ Чего, извини я не расслышал? """
+
+            vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":new_command})
+ 
+            while True:
+                messages = vk.method("messages.getConversations", {"count":20, "filter":"unanswered"}) 
+                if messages["count"] > 0: 
+                    last_messages = messages["items"][0]["last_message"] 
+                    text = last_messages["text"] 
+                    user_id = last_messages["from_id"] 
+                    msg_id = random.randint(1, 200000000000000000000000000000000000000000000000000000000)
+ 
+                    if text == "1":
+                        dota = steam.get_dota()
+                        sub_msg = "{} игроков".format(dota)
+                        vk.method("messages.send",
+                            {"peer_id":user_id, "random_id":msg_id, "message":sub_msg})
+                        break
+                    if text == "2":
+                        pubg = steam.get_pubg()
+                        sub_msg1 = "{} подписчиков".format(pubg)
+                        vk.method("messages.send",
+                            {"peer_id":user_id, "random_id":msg_id, "message":sub_msg1})
+                        break
+
+                    else:
+                        vk.method("messages.send", {"peer_id":user_id, "random_id":msg_id, "message":bot_infaf})
 
         
                        
         else:
             vk.method("messages.send",
-                        {"peer_id":user_id, "random_id":msg_id, "message":bot_infa})
+                        {"peer_id":user_id, "random_id":msg_id, "keyboard":json.dumps(key1.keyboard, ensure_ascii=False).encode("utf-8"), "message":bot_infa})
 
        
-        print(user_id, "написал нам", text)
+        print(user_id, "написал нам", text, datetime.today())
         
 
 
