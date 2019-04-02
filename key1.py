@@ -1,4 +1,3 @@
-
 keyboard = { 
     "one_time": True, 
     "buttons": [ 
@@ -60,7 +59,7 @@ keyboard = {
         "action": { 
           "type": "text", 
           "payload": "{\"button\": \"4\"}", 
-          "label": "Привет" 
+          "label": "Квест" 
         }, 
         "color": "primary" 
       }],
@@ -84,7 +83,7 @@ keyboard = {
         "action": { 
           "type": "text", 
           "payload": "{\"button\": \"1\"}", 
-          "label": "Википедия" 
+          "label": "Новости" 
         }, 
         "color": "negative" 
       },

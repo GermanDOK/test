@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 
 def get_html():
-    url = "https://yandex.ru/pogoda/yekaterinburg" 
+    url = "https://yandex.ru/pogoda/omsk" 
     responce = requests.get(url)
     return BeautifulSoup(responce.content, "lxml")
 
@@ -41,3 +41,4 @@ def main():
     term_value = get_term()
     
      
+    term_value = get_term()

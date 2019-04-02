@@ -3,10 +3,9 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 
 def get_html():
-    url = "https://yandex.ru/pogoda/yekaterinburg" 
+    url = "https://yandex.ru/pogoda/samara" 
     responce = requests.get(url)
     return BeautifulSoup(responce.content, "lxml")
-
 
 def get_temp():
     html = get_html()
