@@ -9,7 +9,6 @@ html = BeautifulSoup(responce.content, "lxml")
 def get_temp(): 
     return html.find('span class',{"class":temp__value}).value.text
 
-
 def get_condition(): 
     return html.find("div", {"class":"link__condition"}).text 
 
@@ -32,7 +31,7 @@ def main():
     fact_unit_value = get_fact_unit() 
     time_value = get_time()       
     term_value = get_term()
-    
+
      
      
 

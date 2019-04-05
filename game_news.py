@@ -2,10 +2,10 @@ import requests
 import bs4 
 
 def get_news():
-    url = "https://news.mail.ru"
+    url = "https://kanobu.ru/videogames/"
     content = requests.get(url).content
     soup = bs4.BeautifulSoup(content, "lxml")
-    return soup.find_all('a', {"class": "list__text"})
+    return soup.find_all('div', {"class": "c-item_footer"})
 
 def format_news():
     news_tags = get_news()
@@ -16,5 +16,6 @@ def format_news():
         result += news.text + "\n"
 
     return result
+
 
 

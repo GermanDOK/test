@@ -59,7 +59,7 @@ keyboard = {
         "action": { 
           "type": "text", 
           "payload": "{\"button\": \"4\"}", 
-          "label": "Квест" 
+          "label": "VkCoin" 
         }, 
         "color": "primary" 
       }],

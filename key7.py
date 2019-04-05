@@ -21,10 +21,26 @@ keyboard = {
         "action": { 
           "type": "text", 
           "payload": "{\"button\": \"2\"}", 
+          "label": "3" 
+        }, 
+        "color": "positive" 
+      },
+      { 
+        "action": { 
+          "type": "text", 
+          "payload": "{\"button\": \"2\"}", 
+          "label": "4" 
+        }, 
+        "color": "positive" 
+      }], 
+      [{ 
+        "action": { 
+          "type": "text", 
+          "payload": "{\"button\": \"2\"}", 
           "label": "Выйти" 
         }, 
         "color": "negative" 
-      }
-      ]
+      }]
     ] 
   } 
+

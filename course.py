@@ -11,3 +11,5 @@ html = bs4.BeautifulSoup(res.content, "lxml")
  
 def get_course(id):
     return html.find('valute',{"id":id}).value.text
+
+

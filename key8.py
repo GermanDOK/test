@@ -8,16 +8,8 @@ keyboard = {
           "label": "1" 
         }, 
         "color": "positive" 
-      }, 
-     { 
-        "action": { 
-          "type": "text", 
-          "payload": "{\"button\": \"2\"}", 
-          "label": "2" 
-        }, 
-        "color": "positive" 
       },
-      { 
+       { 
         "action": { 
           "type": "text", 
           "payload": "{\"button\": \"2\"}", 
@@ -28,3 +20,4 @@ keyboard = {
       ]
     ] 
   } 
+
